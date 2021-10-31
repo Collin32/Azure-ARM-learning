@@ -5,7 +5,9 @@ name: armTemplateDeployment
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-
+  push:
+    branch:
+      - main
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -25,3 +27,8 @@ jobs:
         uses: Azure/login@v1
         with:
           creds: ${{ secrets.azure_credentials }}
+          - name: Deploy Resource Group Git-stuff with AZ CLI
+  uses: Azure/cli@1.0.4
+  with:
+    inlinescript: |
+      az deployment sub create --location "westus" --template-file ./arm-templates/resourcegroup.json
